@@ -17,7 +17,7 @@ static TService Get<TService>(IHost host) where TService : notnull => host.Servi
 static async Task StartSendingData(ActionInputs actionInputs, IHost host)
 {
     using CancellationTokenSource tokenSource = new();
-    var apiService = Get<IApiService>(host);
+    var apiService = Get<IApplication>(host);
     var logger = Get<ILoggerFactory>(host).CreateLogger("EF.Language.PostFileAction.Program.StartSendingData");
     Console.CancelKeyPress += delegate
     {
@@ -25,7 +25,7 @@ static async Task StartSendingData(ActionInputs actionInputs, IHost host)
         tokenSource.Cancel();
     };
 
-    await apiService.SendData(new ApiConfig(), tokenSource.Token);
+    await apiService.SendData(new ApplicationConfig(), tokenSource.Token);
 }
 
 var parser = Default.ParseArguments<ActionInputs>(() => new(), args);
