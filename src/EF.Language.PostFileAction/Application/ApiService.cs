@@ -1,4 +1,4 @@
-﻿namespace EF.Language.PostFileAction.Services;
+﻿namespace EF.Language.PostFileAction.Application;
 
 public class ApiService : IApiService
 {

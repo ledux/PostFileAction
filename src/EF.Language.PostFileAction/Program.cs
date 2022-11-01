@@ -1,8 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using CommandLine;
+using EF.Language.PostFileAction.Application;
 using EF.Language.PostFileAction.Config;
-using EF.Language.PostFileAction.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
