@@ -3,13 +3,15 @@
 using CommandLine;
 using EF.Language.PostFileAction.Application;
 using EF.Language.PostFileAction.Config;
+using EF.Language.PostFileAction.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using static CommandLine.Parser;
 
-using IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((_, services) => { })
+using var host = Host
+    .CreateDefaultBuilder(args)
+    .ConfigureServices((_, services) => services.AddActionServices())
     .Build();
 
 static TService Get<TService>(IHost host) where TService : notnull => host.Services.GetRequiredService<TService>();
