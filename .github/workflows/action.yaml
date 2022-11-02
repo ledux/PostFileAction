@@ -1,0 +1,19 @@
+name: Test the post file action
+on:
+  workflow_dispatch
+
+jobs:
+  send-file-contents:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: POST contents
+        uses: ILC-Technology/PostFileAction@main
+        with:
+          filePath: ./src/test-file.json
+          uri: https://dev-null.eflangtech.com/
+          method: POST
+          includeFilename: true
+
