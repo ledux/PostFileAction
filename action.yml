@@ -1,0 +1,61 @@
+name: 'PostFileAction'
+description: 'Sends the contents fo a file to a web api'
+inputs:
+  filePath:
+    description: The path to the file, which contents will be sent to the api 
+    required: true
+  apiUrl:
+    description: The url of the API where the contents of the file will be sent to
+    required: true
+  method:
+    description: The http verb to be used while sending. Post, Put, Patch
+    required: false
+    default: Post
+  includeFilename:
+    description: If true, the filename without extension will be appended to the apiUrl
+    required: false
+    default: false
+  useAuth:
+    description: | 
+      If true, the request will be authenticated with a bearer token. 
+      If true, then the following inputs are mandatory tokenEndpoint, clientId, clientSecret
+    required: false
+    default: false
+  tokenEndpoint:
+    description: The OAuth endpoint for getting the bearer token
+    required: false
+  clientId:
+    description: The id of the client 
+    required: false
+  clientSecret:
+    description: The secret of the client
+    required: false
+  oAuthScope:
+    description: An additional OAuth scope
+    required: false
+outputs:
+  responseCode:
+    description: The response code of the server posting the contents of the file.
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - '--filename'
+    - ${{ inputs.filePath }}
+    - '--uri'
+    - ${{ inputs.apiUrl }}
+    - '--method'
+    - ${{ inputs.method }}
+    - '--includeFilename'
+    - ${{ inputs.includeFilename }}
+    - '--useAuth'
+    - ${{ inputs.useAuth }}
+    - '--tokenEndpoint'
+    - ${{ inputs.tokenEndpoint }}
+    - '--clienId'
+    - ${{ inputs.clienId }}
+    - '--clientSecret'
+    - ${{ inputs.clientSecret }}
+    - '--oAuthScope'
+    - ${{ inputs.oAuthScope }}
+
