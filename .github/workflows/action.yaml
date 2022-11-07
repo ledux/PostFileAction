@@ -13,7 +13,7 @@ jobs:
         uses: ILC-Technology/PostFileAction@main
         with:
           filePath: ./src/test-file.json
-          uri: https://dev-null.eflangtech.com/
+          apiUrl: https://dev-null.eflangtech.com/
           method: POST
           includeFilename: true
 
