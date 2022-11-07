@@ -14,6 +14,6 @@ jobs:
         with:
           filePath: ./src/test-file.json
           apiUrl: https://dev-null.eflangtech.com/
-          method: POST
+          method: Post
           includeFilename: true
 
