@@ -21,6 +21,7 @@ static async Task StartSendingData(ActionInputs actionInputs, IHost host)
     using CancellationTokenSource tokenSource = new();
     var apiService = Get<IApplication>(host);
     var logger = Get<ILoggerFactory>(host).CreateLogger("EF.Language.PostFileAction.Program.StartSendingData");
+    logger.LogInformation("Starting action with options {@ActionOptions}", actionInputs);
     Console.CancelKeyPress += delegate
     {
         logger.LogWarning("Cancel pressed! Shutting down ...");
