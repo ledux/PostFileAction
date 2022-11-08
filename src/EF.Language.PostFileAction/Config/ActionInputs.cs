@@ -20,7 +20,7 @@ public class ActionInputs
     public static bool UseAuth { get; set; }
     
     [Option("tokenEndpoint")]
-    public Uri? TokenEndpoint { get; set; }
+    public string? TokenEndpoint { get; set; }
 
     [Option("clientId")]
     public string? ClientId { get; set; }
