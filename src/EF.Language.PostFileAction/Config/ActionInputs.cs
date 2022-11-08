@@ -31,9 +31,3 @@ public class ActionInputs
     [Option("oAuthScope")]
     public string? OAuthScope { get; set; }
 }
-
-public enum HttpVerb
-{
-    Post,
-    Put
-}

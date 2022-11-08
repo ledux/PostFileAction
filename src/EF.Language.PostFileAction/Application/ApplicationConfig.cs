@@ -1,5 +1,5 @@
-﻿namespace EF.Language.PostFileAction.Application;
+﻿using EF.Language.PostFileAction.Config;
 
-public record ApplicationConfig
-{
-}
+namespace EF.Language.PostFileAction.Application;
+
+public record ApplicationConfig(string FilePath, Uri Endpoint, HttpVerb Method);

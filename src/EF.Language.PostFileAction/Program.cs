@@ -28,7 +28,8 @@ static async Task StartSendingData(ActionInputs actionInputs, IHost host)
         tokenSource.Cancel();
     };
 
-    await apiService.SendData(new ApplicationConfig(), tokenSource.Token);
+    var applicationConfig = new ApplicationConfig(actionInputs.FilePath, actionInputs.Uri, actionInputs.Method);
+    await apiService.SendDataAsync(applicationConfig, tokenSource.Token);
 }
 
 var parser = Default.ParseArguments<ActionInputs>(() => new(), args);

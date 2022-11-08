@@ -2,5 +2,5 @@
 
 public interface IApplication
 {
-    Task<Response> SendData(ApplicationConfig applicationConfig, CancellationToken cancellationToken);
+    Task<Response> SendDataAsync(ApplicationConfig applicationConfig, CancellationToken cancellationToken);
 }
