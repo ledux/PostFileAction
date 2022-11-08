@@ -24,6 +24,9 @@ public class Application : IApplication
         var fileContents = await _fileProvider.GetFileContents(new(applicationConfig.FilePath));
         var webResponse = await _webClient.SendPayloadAsync(new(fileContents, applicationConfig.Endpoint, applicationConfig.Method));
 
-        return new();
+        var response = new Response() { Message = webResponse.Message, IsSuccess = webResponse.IsSuccess };
+        _logger.LogInformation("Returning response {@Response}", response);
+        
+        return response;
     }
 }
