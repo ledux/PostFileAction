@@ -36,9 +36,11 @@ var parser = Default.ParseArguments<ActionInputs>(() => new(), args);
 parser.WithNotParsed(errors =>
 {
     // ReSharper disable once AccessToDisposedClosure
-    Get<ILoggerFactory>(host)
-        .CreateLogger("EF.Language.PostFileAction.Program")
-        .LogError(string.Join(Environment.NewLine, errors.Select(e => e.ToString())));
+    var logger = Get<ILoggerFactory>(host).CreateLogger("EF.Language.PostFileAction.Program");
+    foreach (var error in errors)
+    {
+        logger.LogError("Failed to parse because {@Error}", error);
+    }
 
     Environment.Exit(2);
 });
