@@ -52,7 +52,7 @@ runs:
     - ${{ inputs.useAuth }}
     - '--tokenEndpoint'
     - ${{ inputs.tokenEndpoint }}
-    - '--clienId'
+    - '--clientId'
     - ${{ inputs.clienId }}
     - '--clientSecret'
     - ${{ inputs.clientSecret }}
