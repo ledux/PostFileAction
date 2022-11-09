@@ -12,7 +12,7 @@ internal class FileProvider : IFileProvider
     }
     public Task<string> GetFileContents(FileDescription pathToFile)
     {
-        _logger.LogDebug("Reading contents of the file {FilePath}", pathToFile.PathToFile);
+        _logger.LogInformation("Reading contents of the file {FilePath}", pathToFile.PathToFile);
         if (System.IO.File.Exists(pathToFile.PathToFile))
         {
             return System.IO.File.ReadAllTextAsync(pathToFile.PathToFile);

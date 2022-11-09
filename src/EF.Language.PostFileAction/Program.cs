@@ -9,9 +9,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using static CommandLine.Parser;
 
+var parser = Default.ParseArguments<ActionInputs>(() => new(), args);
 using var host = Host
     .CreateDefaultBuilder(args)
-    .ConfigureServices((_, services) => services.AddActionServices())
+    .ConfigureServices((_, services) => services.AddActionServices(parser.Value))
     .Build();
 
 static TService Get<TService>(IHost host) where TService : notnull => host.Services.GetRequiredService<TService>();
@@ -32,7 +33,6 @@ static async Task StartSendingData(ActionInputs actionInputs, IHost host)
     await apiService.SendDataAsync(applicationConfig, tokenSource.Token);
 }
 
-var parser = Default.ParseArguments<ActionInputs>(() => new(), args);
 parser.WithNotParsed(errors =>
 {
     // ReSharper disable once AccessToDisposedClosure
