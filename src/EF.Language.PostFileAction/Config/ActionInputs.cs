@@ -33,6 +33,11 @@ public class ActionInputs
     [Option("oAuthScope")]
     public string? OAuthScope { get; set; }
 
+    /// <summary>
+    /// Validates only the required fields when <see cref="UseAuth"/> is true
+    /// The other fields are already taken care of by the options parser
+    /// </summary>
+    /// <returns>If all required fields are present and error messages, if not. Otherwise, error messages array is empty</returns>
     public (bool, IEnumerable<string>) Validate()
     {
         if (!UseAuth) return (true, Enumerable.Empty<string>());
