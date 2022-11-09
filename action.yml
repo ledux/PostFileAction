@@ -42,10 +42,11 @@ outputs:
 runs:
   using: docker
   image: src/Dockerfile
-  env:
-    USERNAME_VAR: ${ GITHUB_ACTOR }
-    PASSWORD_VAR: ${{ inputs.ghPackagesReadToken }}
   args:
+    - '--build-arg'
+    - "USERNAME_VAR: ${ GITHUB_ACTOR }"
+    - '--build-arg'
+    - "PASSWORD_VAR: ${{ inputs.ghPackagesReadToken }}"
     - '--filename'
     - ${{ inputs.filePath }}
     - '--uri'
