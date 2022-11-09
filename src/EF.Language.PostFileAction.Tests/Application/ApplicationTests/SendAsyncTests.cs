@@ -42,7 +42,7 @@ public class SendAsyncTests
         var testee = new App(A.Dummy<ILogger<App>>(), fileProvider, webClient);
 
         await testee.SendDataAsync(appConfig, CancellationToken.None);
-        A.CallTo(() => webClient.SendPayloadAsync(A<WebRequest>.That.Matches(r => r.Payload.Equals(contents)))).MustHaveHappenedOnceExactly();       
+        A.CallTo(() => webClient.SendPayloadAsync(A<WebRequest>.That.Matches(r => r.Payload.Equals(contents)), CancellationToken.None)).MustHaveHappenedOnceExactly();       
     }
 
     [Theory]
@@ -57,7 +57,7 @@ public class SendAsyncTests
         var webResponse = new WebResponse { Message = message, Status = status };
         var appConfig = new ApplicationConfig(filePath, new Uri("https://dev-null.eflangtech.com"), HttpVerb.Post, false);
         var webClient = A.Dummy<IWebClient>();
-        A.CallTo(() => webClient.SendPayloadAsync(A<WebRequest>._)).Returns(webResponse);
+        A.CallTo(() => webClient.SendPayloadAsync(A<WebRequest>._, CancellationToken.None)).Returns(webResponse);
 
         var testee = new App(A.Dummy<ILogger<App>>(), A.Dummy<IFileProvider>(), webClient);
 
@@ -81,7 +81,7 @@ public class SendAsyncTests
         var testee = new App(A.Dummy<ILogger<App>>(), fileProvider, webClient);
 
         await testee.SendDataAsync(appConfig, CancellationToken.None);
-        A.CallTo(() => webClient.SendPayloadAsync(A<WebRequest>.That.Matches(r => r.Endpoint.AbsolutePath.EndsWith("myfile")))).MustHaveHappenedOnceExactly();
+        A.CallTo(() => webClient.SendPayloadAsync(A<WebRequest>.That.Matches(r => r.Endpoint.AbsolutePath.EndsWith("myfile")), CancellationToken.None)).MustHaveHappenedOnceExactly();
     }
     
     [Fact]
@@ -99,7 +99,7 @@ public class SendAsyncTests
         var testee = new App(A.Dummy<ILogger<App>>(), fileProvider, webClient);
 
         await testee.SendDataAsync(appConfig, CancellationToken.None);
-        A.CallTo(() => webClient.SendPayloadAsync(A<WebRequest>.That.Matches(r => r.Endpoint == endpoint))).MustHaveHappenedOnceExactly();
+        A.CallTo(() => webClient.SendPayloadAsync(A<WebRequest>.That.Matches(r => r.Endpoint == endpoint), CancellationToken.None)).MustHaveHappenedOnceExactly();
     }
 
 }

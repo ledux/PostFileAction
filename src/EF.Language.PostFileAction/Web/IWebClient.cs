@@ -2,5 +2,5 @@
 
 public interface IWebClient
 {
-    Task<WebResponse> SendPayloadAsync(WebRequest webRequest);
+    Task<WebResponse> SendPayloadAsync(WebRequest webRequest, CancellationToken cancellationToken);
 }

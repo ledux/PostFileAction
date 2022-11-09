@@ -11,7 +11,7 @@ public class FakeWebClient : IWebClient
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
     
-    public Task<WebResponse> SendPayloadAsync(WebRequest webRequest)
+    public Task<WebResponse> SendPayloadAsync(WebRequest webRequest, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Sending contents to {Endpoint}", webRequest.Endpoint);
 

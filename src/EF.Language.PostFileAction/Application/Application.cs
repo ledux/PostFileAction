@@ -29,7 +29,7 @@ public class Application : IApplication
             var fileWithoutExtension = Path.GetFileNameWithoutExtension(applicationConfig.FilePath);
             endpoint = new Uri($"{applicationConfig.Endpoint.OriginalString}/{fileWithoutExtension}");
         }
-        var webResponse = await _webClient.SendPayloadAsync(new(fileContents, endpoint, applicationConfig.Method));
+        var webResponse = await _webClient.SendPayloadAsync(new(fileContents, endpoint, applicationConfig.Method), cancellationToken);
 
         var response = new Response() { Message = webResponse.Message, IsSuccess = webResponse.IsSuccess };
         _logger.LogInformation("Returning response {@Response}", response);
