@@ -33,7 +33,13 @@ static async Task StartSendingData(ActionInputs actionInputs, IHost host)
         actionInputs.Uri,
         actionInputs.Method,
         actionInputs.IncludeFilename);
-    await apiService.SendDataAsync(applicationConfig, tokenSource.Token);
+    var response = await apiService.SendDataAsync(applicationConfig, tokenSource.Token);
+
+    if (!response.IsSuccess)
+    {
+        logger.LogError("Failed to execute the action because: {Reason}", response.Message);
+        Environment.Exit(4);
+    }
 }
 
 parser.WithNotParsed(errors =>

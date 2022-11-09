@@ -17,8 +17,9 @@ internal class WebClient: IWebClient
     
     public async Task<WebResponse> SendPayloadAsync(WebRequest webRequest, CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Sending data to {Endpoint} with method {Method}", webRequest.Endpoint, webRequest.Method);
         var content = new StringContent(JsonSerializer.Serialize(webRequest.Payload));
-        HttpResponseMessage responseMessage = null;
+        HttpResponseMessage? responseMessage = null;
         switch (webRequest.Method)
         {
             case HttpVerb.Post:
@@ -38,9 +39,24 @@ internal class WebClient: IWebClient
         {
             var responseContent = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
             statusCode = (int)responseMessage.StatusCode;
-            webResponseMessage = responseMessage.IsSuccessStatusCode
-                ? $"Successfully sent request with method {webRequest.Method} to endpoint {webRequest.Endpoint}: {responseContent}"
-                : $"Failed to send request with method {webRequest.Method} to endpoint {webRequest.Endpoint}: {responseContent}";
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                _logger.LogInformation(
+                    "Successfully sent request with method {Method} to endpoint {Endpoint} with response {Response}",
+                    webRequest.Method,
+                    webRequest.Endpoint,
+                    responseContent);
+                webResponseMessage = $"Successfully sent request with method {webRequest.Method} to endpoint {webRequest.Endpoint}: {responseContent}";
+            }
+            else
+            {
+                _logger.LogError(
+                    "Failed to send request with method {Method} to endpoint {Endpoint} with response {Response}",
+                    webRequest.Method,
+                    webRequest.Endpoint,
+                    responseContent);
+                webResponseMessage = $"Failed to send request with method {webRequest.Method} to endpoint {webRequest.Endpoint}: {responseContent}";
+            }
         }
 
         return new WebResponse { Message = webResponseMessage, Status = statusCode };
