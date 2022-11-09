@@ -34,7 +34,7 @@ inputs:
     description: An additional OAuth scope
     required: false
   ghPackagesReadToken:
-    description: A token which allows to get NuGet packages from ILC-Technology (i.e '${{ secrets.GH_PACKAGES_READ_TOKEN }}')
+    description: A token which allows to get NuGet packages from ILC-Technology (i.e secrets.GH_PACKAGES_READ_TOKEN)
     required: true
 outputs:
   responseCode:
