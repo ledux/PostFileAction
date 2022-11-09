@@ -33,6 +33,9 @@ inputs:
   oAuthScope:
     description: An additional OAuth scope
     required: false
+  ghPackagesReadToken:
+    description: A token which allows to get NuGet packages from ILC-Technology (i.e ${{ secrets.GH_PACKAGES_READ_TOKEN }})
+    required: true
 outputs:
   responseCode:
     description: The response code of the server posting the contents of the file.
@@ -41,7 +44,7 @@ runs:
   image: src/Dockerfile
   env:
     USERNAME_VAR: ${ GITHUB_ACTOR }
-    PASSWORD_VAR: ${{ secrets.GH_PACKAGES_READ_TOKEN }}
+    PASSWORD_VAR: ${{ inputs.ghPackagesReadToken }}
   args:
     - '--filename'
     - ${{ inputs.filePath }}

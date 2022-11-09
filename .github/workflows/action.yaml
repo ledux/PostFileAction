@@ -16,4 +16,5 @@ jobs:
           apiUrl: https://dev-null.eflangtech.com/
           method: Post
           includeFilename: true
+          ghPackagesReadToken: ${{ secrets.GH_PACKAGES_READ_TOKEN }}
 
