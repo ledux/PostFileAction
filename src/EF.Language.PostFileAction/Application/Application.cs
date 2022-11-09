@@ -22,7 +22,14 @@ public class Application : IApplication
         _logger.LogInformation("Starting sending data from file {FilePath} to {Endpoint} with method {Method}", applicationConfig.FilePath, applicationConfig.Endpoint, applicationConfig.Method);
         
         var fileContents = await _fileProvider.GetFileContents(new(applicationConfig.FilePath));
-        var webResponse = await _webClient.SendPayloadAsync(new(fileContents, applicationConfig.Endpoint, applicationConfig.Method));
+
+        var endpoint = applicationConfig.Endpoint;
+        if (applicationConfig.IncludeFilename)
+        {
+            var fileWithoutExtension = Path.GetFileNameWithoutExtension(applicationConfig.FilePath);
+            endpoint = new Uri($"{applicationConfig.Endpoint.OriginalString}/{fileWithoutExtension}");
+        }
+        var webResponse = await _webClient.SendPayloadAsync(new(fileContents, endpoint, applicationConfig.Method));
 
         var response = new Response() { Message = webResponse.Message, IsSuccess = webResponse.IsSuccess };
         _logger.LogInformation("Returning response {@Response}", response);

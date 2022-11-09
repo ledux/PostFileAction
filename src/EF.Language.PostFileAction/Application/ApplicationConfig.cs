@@ -2,4 +2,4 @@
 
 namespace EF.Language.PostFileAction.Application;
 
-public record ApplicationConfig(string FilePath, Uri Endpoint, HttpVerb Method);
+public record ApplicationConfig(string FilePath, Uri Endpoint, HttpVerb Method, bool IncludeFilename);

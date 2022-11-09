@@ -8,7 +8,6 @@ using EF.Language.PostFileAction.Web;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Xunit;
 using App = EF.Language.PostFileAction.Application.Application;
 
@@ -20,7 +19,7 @@ public class SendAsyncTests
     public async Task CallGetFileContents_WithPathFromParameter()
     {
         const string filePath = "/tmp/myfile.json";
-        var appConfig = new ApplicationConfig(filePath, new Uri("https://dev-null.eflangtech.com"), HttpVerb.Post);
+        var appConfig = new ApplicationConfig(filePath, new Uri("https://dev-null.eflangtech.com"), HttpVerb.Post, false);
         var fileProvider = A.Fake<IFileProvider>();
         var testee = new App(A.Dummy<ILogger<App>>(), fileProvider, A.Dummy<IWebClient>());
 
@@ -33,7 +32,7 @@ public class SendAsyncTests
     public async Task GetFileContentsReturnsString_CallsSendPayloadAsync()
     {
         const string filePath = "/tmp/myfile.json";
-        var appConfig = new ApplicationConfig(filePath, new Uri("https://dev-null.eflangtech.com"), HttpVerb.Post);
+        var appConfig = new ApplicationConfig(filePath, new Uri("https://dev-null.eflangtech.com"), HttpVerb.Post, false);
         
         const string contents = @"{""firstname"":""Eric"", ""lastname"":""Idle""}";
         var fileProvider = A.Fake<IFileProvider>();
@@ -56,7 +55,7 @@ public class SendAsyncTests
         const string message = "Response message";
         const string filePath = "/tmp/myfile.json";
         var webResponse = new WebResponse { Message = message, Status = status };
-        var appConfig = new ApplicationConfig(filePath, new Uri("https://dev-null.eflangtech.com"), HttpVerb.Post);
+        var appConfig = new ApplicationConfig(filePath, new Uri("https://dev-null.eflangtech.com"), HttpVerb.Post, false);
         var webClient = A.Dummy<IWebClient>();
         A.CallTo(() => webClient.SendPayloadAsync(A<WebRequest>._)).Returns(webResponse);
 
@@ -66,6 +65,41 @@ public class SendAsyncTests
 
         actual.Message.Should().Be(message);
         actual.IsSuccess.Should().Be(isSuccess);
+    }
+
+    [Fact]
+    public async Task IncludeFileName_CallsSendPayloadWithFileNameInUrl()
+    {
+        const string filePath = "/tmp/myfile.json";
+        var appConfig = new ApplicationConfig(filePath, new Uri("https://dev-null.eflangtech.com"), HttpVerb.Post, true);
+        
+        const string contents = @"{""firstname"":""Eric"", ""lastname"":""Idle""}";
+        var fileProvider = A.Fake<IFileProvider>();
+        A.CallTo(() => fileProvider.GetFileContents(A<FileDescription>._)).Returns(contents);
+        
+        var webClient = A.Dummy<IWebClient>();
+        var testee = new App(A.Dummy<ILogger<App>>(), fileProvider, webClient);
+
+        await testee.SendDataAsync(appConfig, CancellationToken.None);
+        A.CallTo(() => webClient.SendPayloadAsync(A<WebRequest>.That.Matches(r => r.Endpoint.AbsolutePath.EndsWith("myfile")))).MustHaveHappenedOnceExactly();
+    }
+    
+    [Fact]
+    public async Task IncludeFileNameIsFalse_CallsSendPayloadWithoutFileNameInUrl()
+    {
+        const string filePath = "/tmp/myfile.json";
+        var endpoint = new Uri("https://dev-null.eflangtech.com");
+        var appConfig = new ApplicationConfig(filePath, endpoint, HttpVerb.Post, false);
+        
+        const string contents = @"{""firstname"":""Eric"", ""lastname"":""Idle""}";
+        var fileProvider = A.Fake<IFileProvider>();
+        A.CallTo(() => fileProvider.GetFileContents(A<FileDescription>._)).Returns(contents);
+        
+        var webClient = A.Dummy<IWebClient>();
+        var testee = new App(A.Dummy<ILogger<App>>(), fileProvider, webClient);
+
+        await testee.SendDataAsync(appConfig, CancellationToken.None);
+        A.CallTo(() => webClient.SendPayloadAsync(A<WebRequest>.That.Matches(r => r.Endpoint == endpoint))).MustHaveHappenedOnceExactly();
     }
 
 }

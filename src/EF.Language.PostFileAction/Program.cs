@@ -29,7 +29,10 @@ static async Task StartSendingData(ActionInputs actionInputs, IHost host)
         tokenSource.Cancel();
     };
 
-    var applicationConfig = new ApplicationConfig(actionInputs.FilePath, actionInputs.Uri, actionInputs.Method);
+    var applicationConfig = new ApplicationConfig(actionInputs.FilePath,
+        actionInputs.Uri,
+        actionInputs.Method,
+        actionInputs.IncludeFilename);
     await apiService.SendDataAsync(applicationConfig, tokenSource.Token);
 }
 
