@@ -17,10 +17,12 @@ public class ActionInputs
     public bool IncludeFilename { get; set; }
 
     [Option("useAuth")]
-    public static bool UseAuth { get; set; }
+    public bool UseAuth { get; set; }
     
     [Option("tokenEndpoint")]
-    public string? TokenEndpoint { get; set; }
+    public string? TokenEndpointString { get; set; }
+
+    public Uri? TokeEndpointUri => string.IsNullOrEmpty(TokenEndpointString) ? null : new Uri(TokenEndpointString);
 
     [Option("clientId")]
     public string? ClientId { get; set; }
@@ -30,4 +32,18 @@ public class ActionInputs
 
     [Option("oAuthScope")]
     public string? OAuthScope { get; set; }
+
+    public (bool, IEnumerable<string>) Validate()
+    {
+        if (!UseAuth) return (true, Enumerable.Empty<string>());
+        
+        var isValid = true;
+        var errorMessages = new List<string>();
+        if (string.IsNullOrEmpty(TokenEndpointString)) errorMessages.Add("'TokenEndpoint' is required");
+        if (string.IsNullOrEmpty(ClientId)) errorMessages.Add("'ClientId' is required");
+        if (string.IsNullOrEmpty(ClientSecret)) errorMessages.Add("'ClientSecret' is required");
+        if (errorMessages.Any()) isValid = false;
+
+        return (isValid, errorMessages);
+    }
 }
