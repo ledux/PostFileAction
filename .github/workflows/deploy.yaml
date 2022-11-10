@@ -32,10 +32,9 @@ jobs:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
     - name: Build and push image
-      working-directory: src
       uses: docker/build-push-action@v3
       with:
-        context: .
+        context: src/
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
