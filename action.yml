@@ -38,7 +38,7 @@ outputs:
     description: The response code of the server posting the contents of the file.
 runs:
   using: docker
-  image: 'docker://ghcr.io/ilc-technology/postfileaction'
+  image: 'docker://ghcr.io/ilc-technology/postfileaction:main'
   args:
     - '--filename'
     - ${{ inputs.filePath }}
