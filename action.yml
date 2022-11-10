@@ -41,7 +41,7 @@ outputs:
     description: The response code of the server posting the contents of the file.
 runs:
   using: docker
-  image: src/Dockerfile
+  image: 'docker://ghcr.io/ILC-Technology/PostFileAction'
   args:
     - '--build-arg'
     - "USERNAME_VAR: ${ GITHUB_ACTOR }"
