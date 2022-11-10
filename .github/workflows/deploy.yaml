@@ -38,7 +38,7 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        build-args: 
-          - USERNAME_VAR=${{ github.actor }}
-          - PASSWORD_VAR=${{ secrets.GH_PACKAGES_READ_TOKEN }}
+        build-args: |
+          USERNAME_VAR=${{ github.actor }}
+          PASSWORD_VAR=${{ secrets.GH_PACKAGES_READ_TOKEN }}
 
