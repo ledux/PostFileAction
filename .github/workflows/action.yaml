@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.GH_PACKAGES_READ_TOKEN }}
 
       - name: POST contents
-        uses: ILC-Technology/PostFileAction@main
+        uses: ledux/PostFileAction@main
         with:
           filePath: ./src/test-file.json
           apiUrl: https://dev-null.eflangtech.com/
