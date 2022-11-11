@@ -14,9 +14,21 @@ public class ActionInputs
     public HttpVerb Method { get; set; } = HttpVerb.Post;
 
     [Option("includeFilename", Required = false)]
+    public string IncludeFileNameString
+    {
+        get => IncludeFilename.ToString(); 
+        set => IncludeFilename = value.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
+    }
+    
     public bool IncludeFilename { get; set; }
 
-    [Option("useAuth")]
+    [Option("useAuth", Default = "false")] 
+    public string UseAuthString
+    {
+        get => UseAuth.ToString();
+        set => UseAuth = value.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase);
+    }
+    
     public bool UseAuth { get; set; }
     
     [Option("tokenEndpoint")]
