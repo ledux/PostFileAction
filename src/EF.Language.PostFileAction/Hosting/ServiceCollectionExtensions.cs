@@ -5,6 +5,7 @@ using EF.Language.PostFileAction.Config;
 using EF.Language.PostFileAction.File;
 using EF.Language.PostFileAction.Web;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
 
@@ -20,8 +21,11 @@ public static class ServiceCollectionExtensions
             .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromMilliseconds(Math.Pow(100, retryAttempt)));
         
         serviceCollection.AddLogging(builder =>
-        {
-        })
+            {
+                builder
+                    .SetMinimumLevel(LogLevel.Trace)
+                    .AddConsole();
+            })
             .AddScoped<IApplication, Application.Application>()
             .AddScoped<IFileProvider, FileProvider>()
         ;
@@ -35,7 +39,7 @@ public static class ServiceCollectionExtensions
                 var authenticationModel = new OAuthAuthenticationModel(actionInputs.ClientId, actionInputs.ClientSecret, actionInputs.TokeEndpointUri, "");
 #pragma warning restore CS8604
                 serviceCollection
-                    .AddBearerAuthenticatedHttpClient<IWebClient, FakeWebClient>(() => authenticationModel)
+                    .AddBearerAuthenticatedHttpClient<IWebClient, WebClient>(() => authenticationModel)
                     .AddPolicyHandler(retryPolicy);
             }
             else
@@ -45,7 +49,7 @@ public static class ServiceCollectionExtensions
         }
         else
         {
-            serviceCollection.AddHttpClient<IWebClient, FakeWebClient>().AddPolicyHandler(retryPolicy);
+            serviceCollection.AddHttpClient<IWebClient, WebClient>().AddPolicyHandler(retryPolicy);
         }
         
         return serviceCollection;
