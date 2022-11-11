@@ -42,5 +42,5 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         build-args: |
           USERNAME_VAR=${{ github.actor }}
-          PASSWORD_VAR=${{ secrets.GH_PACKAGES_READ_TOKEN }}
+          PASSWORD_VAR=${{ secrets.EF_PACKAGES_READ_TOKEN }}
 
