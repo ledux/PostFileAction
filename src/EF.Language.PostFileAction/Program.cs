@@ -54,6 +54,19 @@ parser.WithNotParsed(errors =>
     Environment.Exit(2);
 });
 
-parser.WithParsedAsync(options => StartSendingData(options, host));
+parser.WithParsedAsync(options =>
+{
+    try
+    {
+        return StartSendingData(options, host);
+    }
+    catch (Exception e)
+    {
+        var logger = Get<ILoggerFactory>(host).CreateLogger("EF.Language.PostFileAction.Program");
+        logger.LogError(e, "Failed to run the action");
+        Environment.Exit(8);
+        return Task.CompletedTask;
+    }
+});
 
     
